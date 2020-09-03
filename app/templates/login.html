@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block app_content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            {% with messages = get_flashed_messages(with_categories = true)%}
+            {% if messages %}
+                {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            {% endif %}
+            {% endwith %}
+        </div>
+    </div>
+</div>
+<div class="container">
+    <h1>现在登录</h1>
+    <br>
+    <div class="row">
+        <div class="col-md-6">
+            {% import 'bootstrap/wtf.html' as wtf %}
+            {{ wtf.quick_form(form) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <hr>
+            忘记密码？
+            <a href="{{ url_for('send_password_reset_request') }}">
+                点击这里重置密码。
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

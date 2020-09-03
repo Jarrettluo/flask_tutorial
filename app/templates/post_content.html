@@ -1,0 +1,44 @@
+
+    {% for post in posts.items %}
+    <div class="media" style="
+      background-color:#ffffff;
+      padding:20px;
+      padding-bottom:0px;
+      box-shadow: 1px 1px 5px #ebeced;
+    ">
+        <div class="media-left">
+            <a href="{{ url_for('user_page', username = post.author.username) }}">
+                <img class="media-object" src="{{ post.author.avatar_img }}" alt="avater" width="60px">
+            </a>
+        </div>
+        <div class="media-body">
+                <h4 class="media-heading">
+                    <a href="{{ url_for('article_detail', post_id = post.id ) }}" style="font-weight:bold;">
+                        {{ post.title }}
+                    </a>
+                    {% if ((post.users)|length) >0 %}
+                    <span class="
+                    {% if ((post.users)|length) >0 %}
+                    label label-default
+                    {% elif ((post.users)|length) >10 %}
+                    label label-info
+                    {% elif (post.users)|length > 100 %}
+                    label label-primary
+                    {% elif (post.users)|length > 500 %}
+                    label label-success
+                    {% elif (post.users)|length > 2000 %}
+                    label label-warning
+                    {% elif (post.users)|length > 10000 %}
+                    label label-danger
+                    {% endif %}
+                    ">{{ (post.users)|length }} 人支持</span>
+                    {% endif %}
+                </h4>
+
+            <small class="text-muted"> {{ post.timestamp}} <a href="{{ url_for('user_page', username = post.author.username) }}">{{ post.author.username }}</a></small>
+            <p>{{ post.body }}</p>
+        </div>
+    </div>
+    {% endfor %}
+
+

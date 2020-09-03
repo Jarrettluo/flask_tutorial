@@ -1,0 +1,23 @@
+{% extends "bootstrap/base.html" %}
+
+{% block navbar %}
+  {% include 'admin_nav.html' %}
+{% endblock %}
+
+{% block content %}
+{% block module_content %}
+
+{% endblock %}
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+
+  <!-- Bootstrap core JavaScript
+  ================================================== -->
+  <!-- Placed at the end of the document so the pages load faster -->
+  <script src="{{ url_for('static', filename='vendor/jquery.min.js') }}"></script>
+  <script>window.jQuery || document.write("<script src='{{ url_for('static', filename='vendor/jquery.min.js') }}'><\/script>")</script>
+  <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+  <script src="{{ url_for('static', filename='js/ie10-viewport-bug-workaround.js' )}}"></script>
+  <script src="{{ url_for('static', filename='js/offcanvas.js' )}}"></script>
+{% endblock %}

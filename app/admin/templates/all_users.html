@@ -1,0 +1,74 @@
+{% extends 'admin_base.html' %}
+
+
+{% block module_content %}
+    <div class="container-fluid">
+      <div class="row">
+
+        <div class="col-sm-3 col-md-2 sidebar">
+          <ul class="nav nav-sidebar">
+            <li><a href="{{ url_for('admin.admin_index') }}">总览 </a></li>
+            <li  class="active"><a href="{{ url_for('admin.all_users_page') }}">用户信息 <span class="sr-only">(current)</span> </a></li>
+            <li><a href="{{ url_for('admin.all_posts_admin') }}">所有资源</a></li>
+            <li><a href="#">Export</a></li>
+          </ul>
+          <ul class="nav nav-sidebar">
+            <li><a href="">Nav item</a></li>
+            <li><a href="">Nav item again</a></li>
+            <li><a href="">One more nav</a></li>
+            <li><a href="">Another nav item</a></li>
+            <li><a href="">More navigation</a></li>
+          </ul>
+          <ul class="nav nav-sidebar">
+            <li><a href="">Nav item again</a></li>
+            <li><a href="">One more nav</a></li>
+            <li><a href="">Another nav item</a></li>
+          </ul>
+        </div>
+
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+          <h1 class="page-header">用户列表</h1>
+
+          <h2 class="sub-header">全部用户</h2>
+            {% with messages = get_flashed_messages(with_categories = true)%}
+            {% if messages %}
+                {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            {% endif %}
+            {% endwith %}
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>用户ID</th>
+                  <th>用户名</th>
+                  <th>邮箱</th>
+                  <th>粉丝数</th>
+                  <th>删除用户</th>
+                </tr>
+              </thead>
+              <tbody>
+              {% for user in users %}
+                <tr>
+                  <td>{{ user.id }}</td>
+                  <td><a href="{{ url_for('user_page', username = user.username) }}">{{ user.username }}</a></td>
+                  <td>{{ user.email }}</td>
+                  <td>{{ user.followers|length }}</td>
+                  <td><a href="{{ url_for('admin.delete_user', user_id=user.id) }}"><button>删除</button></a></td>
+                </tr>
+              {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+          <h1 class="page-header">仪表盘</h1>
+        </div>
+
+      </div>
+    </div>
+{% endblock %}

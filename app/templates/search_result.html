@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block app_content %}
+<div class="container">
+    <div class="cow">
+        <div class="col-md-6">
+            {% with messages = get_flashed_messages(with_categories = true)%}
+            {% if messages %}
+                {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            {% endif %}
+            {% endwith %}
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+        <hr>
+            <h2>搜索结果如下：</h2>
+            {% include 'post_content.html' %}
+        </div>
+
+
+    </div>
+</div>
+</div>
+{% endblock%}

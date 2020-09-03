@@ -1,0 +1,7 @@
+
+
+        <h2>你好 , {{ current_user.username }}！欢迎登录 </h2>
+        <br>
+            {% import 'bootstrap/wtf.html' as wtf %}
+            {{ wtf.quick_form(form) }}
+        <hr>

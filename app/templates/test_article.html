@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block app_content %}
+<div class="container">
+<div class="row">
+  <div class="col-xs-12 col-sm-6 col-md-9" style="border:1px;">.col-xs-12 .col-sm-6 .col-md-8</div>
+  <div class="col-xs-12 col-md-3">
+        {% block article_content%}
+            {% include 'user_page_side.html' %}
+            {% include 'user_page_search_side.html' %}
+        {% endblock %}
+  </div>
+</div>
+
+</div><!--/.container-->
+{% endblock%}
