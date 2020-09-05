@@ -8,6 +8,8 @@
 """
 import heapq
 import os, json
+from datetime import time, datetime
+from typing import Dict, List, Any
 
 from flask import render_template, request, flash, redirect, url_for, jsonify
 from app.forms import RegisterForm, LoginForm, PasswordResetRequestForm, ResetPasswordForm, PostTweetForm, \
@@ -305,7 +307,7 @@ def unlike_post(post_id):
     return redirect(url_for('article_detail', post_id=post_id))
 
 
-@app.route('/recommend')  # 推荐文章, 支持量最高的前十篇文章
+@app.route('/recommend', methods=['GET'])  # 推荐文章, 支持量最高的前十篇文章
 def recommend():
     post = Post.query.all()  # 根据文章ID查找
     post_id = [post.index(i) for i in post]
@@ -337,10 +339,36 @@ def recommend():
     return jsonify(result)
 
 
-@app.route('/comment', methods=['POST'])
+@app.route('/comment', methods=['GET', 'POST'])
 def comment():
     resp = {}
-    if request.method == 'POST':
+    print('到达comment页面！')
+    if request.method == 'GET':
+        args = request.args
+        args = args.to_dict()  # 获取get的参数
+        post_id = args['pathname'].split('/')[-1]  # 获取当前页面的id
+        p1 = Post.query.filter_by(id=post_id).first()  # 筛选出当前页面的post内容
+        data: List[Dict[Any, Any]] = []
+        if p1:
+            all_comment = p1.comment
+            for comment in all_comment:
+                usr_id = comment.comment_user_id
+                usr_name = User.query.filter_by(id=usr_id).first().username
+                usr_avaster = User.query.filter_by(id=usr_id).first().avatar_img
+                struct_time = comment.comment_timestamp
+                timestamp = datetime.strftime(struct_time, '%Y-%m-%d %H:%M:%S')
+                data.append({
+                    'msg': comment.comment_msg,
+                    'timestamp': timestamp,
+                    'usr_id': usr_id,
+                    'usr_name': usr_name,
+                    'usr_avaster': usr_avaster,
+                }
+                )
+        resp['code'] = 200
+        resp['data'] = data
+        pass
+    elif request.method == 'POST':
         data = json.loads(request.get_data(as_text=True))
         msg, title, username = data['comment'], data['title'], data['username']
         p1 = Post.query.filter_by(title=title).first()  # 根据标题筛选出post
@@ -349,7 +377,9 @@ def comment():
             p1.comment = [post_comment]  # post的评论添加
             db.session.commit()  # 更新数据库
             resp['status'] = 200
-    return resp
+    else:
+        pass
+    return jsonify(resp)
 
 
 @app.route('/create', methods=['GET', 'POST'])

@@ -53,9 +53,9 @@
         </div><!-- /.blog-main -->
 
         <div id="qrcode"></div>
-        <script type="text/javascript">
+        <!-- <script type="text/javascript">
         new QRCode(document.getElementById("qrcode"), "http://www.runoob.com");  // 设置要生成二维码的链接
-        </script>
+        </script> -->
 
         <div class="blog-post" style="
             background-color:#ffffff;
@@ -75,16 +75,31 @@
               </div>
             </div>
             <hr>
-            <div class="media">
-              <div class="media-left">
-                <a href="#">
-                  <img class="media-object" src="{{ post.author.avatar_img }}" alt="..." style="width:40px;">
-                </a>
-              </div>
-              <div class="media-body">
-                <h4 class="media-heading">{{ post.author.username}} <small class="mute">{{ post.timestamp }}</small></h4>
-                这里是假装发表的评论内容。
-              </div>
+            <div id = 'all_comments'>
+              <!-- <div class="media">
+                <div class="media-left">
+                  <a href="#">
+                    <img class="media-object" src="{{ post.author.avatar_img }}" alt="..." style="width:40px;">
+                  </a>
+                </div>
+                <div class="media-body">
+                  <h4 class="media-heading">{{ post.author.username}} <small class="mute">{{ post.timestamp }}</small></h4>
+                  这里是假装发表的评论内容。
+                </div>
+              </div> -->
+
+
+              <!-- <div class="media">
+                <div class="media-left">
+                  <a href="#">
+                    <img class="media-object" src="{{ post.author.avatar_img }}" alt="..." style="width:40px;">
+                  </a>
+                </div>
+                <div class="media-body">
+                  <h4 class="media-heading">{{ post.author.username}} <small class="mute">{{ post.timestamp }}</small></h4>
+                  这里是假装发表的评论内容。
+                </div>
+              </div> -->
             </div>
         </div> <!--blog-post-->
         <br>
@@ -141,5 +156,6 @@
 </div><!--/.container-->
 
 <script src="{{ url_for('static', filename='vendor/jquery.min.js') }}"></script>
-<script src="{{ url_for('static', filename='js/my.js') }}"></script>
+<script src="{{ url_for('static', filename='js/post_recomment.js') }}"></script>
+<script src="{{ url_for('static', filename='js/post_comment.js') }}"></script>
 {% endblock%}

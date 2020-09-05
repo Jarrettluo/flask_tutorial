@@ -8,7 +8,7 @@
 """
 from app import app, db
 from app.models import User
-
+# from livereload import Server
 
 class Init_db():
     # 删除所有表
@@ -24,3 +24,6 @@ if __name__ == '__main__':
     # app.run(host = '0.0.0.0', debug=True)
     # Init_db()
     app.run(debug=True)
+    # live_server = Server(app.wsgi_app)
+    # live_server.watch('**/*.*')
+    # live_server.serve(open_url_delay=True)
