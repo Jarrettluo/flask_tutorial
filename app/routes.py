@@ -369,6 +369,7 @@ def comment():
         resp['data'] = data
         pass
     elif request.method == 'POST':
+        print('到达post的页面了')
         data = json.loads(request.get_data(as_text=True))
         msg, title, username = data['comment'], data['title'], data['username']
         p1 = Post.query.filter_by(title=title).first()  # 根据标题筛选出post
