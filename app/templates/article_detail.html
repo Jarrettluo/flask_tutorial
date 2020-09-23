@@ -37,7 +37,7 @@
             background-color:#f9f8f8;
             margin-bottom:20px;">
             <p class="text-center"><small>获取资源，轻松获得</small></p>
-            <p  class="text-center"><a href="" style="a:hover{background-color:red;}"> <img src="{{ url_for('static', filename='asset/pan.png') }}" alt=""></a></p>
+            <p  class="text-center"><a href="" data-toggle="modal" data-target=".bs-example-modal-lg" style="a:hover{background-color:red;}"> <img src="{{ url_for('static', filename='asset/pan.png') }}" alt=""></a></p>
           </div>
           <div style="background-color:#f3f7fb;margin-left:-30px;margin-right:-30px;padding-left:30px;">
              <ul class="nav nav-pills">
@@ -51,6 +51,20 @@
           </div>
 
         </div><!-- /.blog-main -->
+
+        <!-- Large modal -->
+          <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content" style="height:300px;">
+                <div class="modal-header">
+                  资源兑换页
+                </div>
+                <div class="modal-body">
+                  这里是结算页
+                </div>
+              </div>
+            </div>
+          </div>
 
         <div id="qrcode"></div>
         <!-- <script type="text/javascript">
@@ -76,30 +90,6 @@
             </div>
             <hr>
             <div id = 'all_comments'>
-              <!-- <div class="media">
-                <div class="media-left">
-                  <a href="#">
-                    <img class="media-object" src="{{ post.author.avatar_img }}" alt="..." style="width:40px;">
-                  </a>
-                </div>
-                <div class="media-body">
-                  <h4 class="media-heading">{{ post.author.username}} <small class="mute">{{ post.timestamp }}</small></h4>
-                  这里是假装发表的评论内容。
-                </div>
-              </div> -->
-
-
-              <!-- <div class="media">
-                <div class="media-left">
-                  <a href="#">
-                    <img class="media-object" src="{{ post.author.avatar_img }}" alt="..." style="width:40px;">
-                  </a>
-                </div>
-                <div class="media-body">
-                  <h4 class="media-heading">{{ post.author.username}} <small class="mute">{{ post.timestamp }}</small></h4>
-                  这里是假装发表的评论内容。
-                </div>
-              </div> -->
             </div>
         </div> <!--blog-post-->
         <br>
@@ -113,7 +103,6 @@
           box-shadow: 1px 1px 5px #ebeced;">
           <!-- 这里填入由jquery获取的数据 -->
         </div>
-
 
 
         <nav>
@@ -156,6 +145,6 @@
 </div><!--/.container-->
 
 <script src="{{ url_for('static', filename='vendor/jquery.min.js') }}"></script>
-<script src="{{ url_for('static', filename='js/post_recomment.js') }}"></script>
+<!--<script src="{{ url_for('static', filename='js/post_recomment.js') }}"></script>-->
 <script src="{{ url_for('static', filename='js/post_comment.js') }}"></script>
 {% endblock%}
