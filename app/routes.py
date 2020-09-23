@@ -309,6 +309,7 @@ def unlike_post(post_id):
 
 @app.route('/recommend', methods=['GET'])  # 推荐文章, 支持量最高的前十篇文章
 def recommend():
+    print('这里是推荐的内容！')
     post = Post.query.all()  # 根据文章ID查找
     post_id = [post.index(i) for i in post]
     most_recommend = [len(i.users) for i in post]  # 获取每个文章的支持用户数
