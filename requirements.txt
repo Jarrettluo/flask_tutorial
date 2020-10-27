@@ -2,7 +2,7 @@ flask
 flask-bootstrap
 flask-sqlalchemy
 flask-wtf
-wtforms
+WTForms==2.2.1
 email_validator
 flask-bcrypt
 flask-login

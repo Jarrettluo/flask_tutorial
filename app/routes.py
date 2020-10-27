@@ -307,6 +307,30 @@ def unlike_post(post_id):
     return redirect(url_for('article_detail', post_id=post_id))
 
 
+@app.route('/cash_resource/<post_id>')
+@login_required
+def cash_resource(post_id):
+    post = Post.query.get(post_id)  # 根据文章ID查找
+    if current_user == post.author:
+        flash('不能兑换自己的资源', category='info')
+        return redirect(url_for('article_detail', post_id=post_id))
+    else:
+        # 以下是结算的内容！
+        cost = int(post.source_value)
+        if current_user.all_coins < cost:
+            flash('余额不足，不能兑换！', category='danger')
+            return redirect(url_for('article_detail', post_id=post_id))
+        else:
+            current_user.all_coins = current_user.all_coins - cost  # 用户的总金币数减少
+            describe = f'购买{post.id}_{post.title}'
+            operate = 1
+            coin = Coin(cost=cost, describe=describe, operate=operate)
+            current_user.user_coins.append(coin)
+            db.session.commit()
+            flash('兑换成功', category='info')
+            return redirect(url_for('article_detail', post_id=post_id))
+
+
 @app.route('/recommend', methods=['GET'])  # 推荐文章, 支持量最高的前十篇文章
 def recommend():
     print('这里是推荐的内容！')

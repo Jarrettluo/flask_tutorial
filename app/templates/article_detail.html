@@ -4,6 +4,15 @@
 <div class="container">
     <div class="row" >
       <div class="col-sm-9">
+        {% with messages = get_flashed_messages(with_categories = true)%}
+            {% if messages %}
+                {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
         <div class="blog-main" style="
           background-color:#ffffff;
           padding:30px;
@@ -55,12 +64,60 @@
         <!-- Large modal -->
           <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
             <div class="modal-dialog modal-lg" role="document">
-              <div class="modal-content" style="height:300px;">
+              <div class="modal-content" style="margin-top:50px;">
                 <div class="modal-header">
-                  资源兑换页
+                  <h3>资源兑换页</h3>
+
                 </div>
                 <div class="modal-body">
-                  这里是结算页
+                  <div class="row">
+                    <div class="col-md-7">
+                      <div style="margin:10px 0px 0px 10px;
+                                  background-color:#f1f3f4;
+                                  border-radius:5px;
+                                  padding:20px">
+                        <h4>声明条款</h4>
+                        <h4>
+                          <small>
+                            <li style="margin-bottom:5px;">确认无误后自行确认是否兑换。</li>
+                            <li style="margin-bottom:5px;">兑换后的资源无法退换。</li>
+                            <li style="margin-bottom:5px;">兑换后的金币无法返还。</li>
+                            <li style="margin-bottom:5px;">网站运行者对资源的真实性及真实价值不做评估。</li>
+                            <li style="margin-bottom:5px;">如果觉得资源价值不符请果断评论。</li>
+                            <li style="margin-bottom:5px;">如果您觉得资源侵犯了您的权益，请及时举报。</li>
+                          </small>
+                        </h4>
+                      </div>
+
+                    </div>
+                    <div class="col-md-5">
+                      <div style="padding:5px 20px;border-left:1px solid #7c7c7c;margin:10px 0px 30px 0px;">
+                        <h5>
+                          <strong>资源内容：</strong> {{ post.title }}
+                        </h5>
+                        <h5>
+                          <strong>资源金币：</strong>{{ post.source_value}}
+                        </h5>
+                        <h5 style="margin-top:20px;">
+                          <strong>金币总数：</strong>{{ current_user.all_coins }}
+                        </h5>
+                        <h5>
+                          <strong>扣除金币：</strong>{{ post.source_value }}
+                        </h5>
+                        <h5>
+                          <strong>发送邮箱：</strong>{{ current_user.email }}
+                        </h5>
+                        <br>
+                        <br>
+                      </div>
+                      <div style="text-align:center"><a href="{{ url_for('cash_resource', post_id=post.id) }}">
+                        <button type="button" class="btn btn-success">
+                          确认兑换
+                        </button></a>
+                      </div>
+
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
