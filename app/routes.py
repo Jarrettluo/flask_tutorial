@@ -360,7 +360,6 @@ def recommend():
         result_a['post_like_num'] = lit[1]
         result.append(result_a)
         result_a = {}
-
     return jsonify(result)
 
 
@@ -394,17 +393,26 @@ def comment():
         resp['data'] = data
         pass
     elif request.method == 'POST':
-        print('到达post的页面了')
         data = json.loads(request.get_data(as_text=True))
         msg, title, username = data['comment'], data['title'], data['username']
         p1 = Post.query.filter_by(title=title).first()  # 根据标题筛选出post
         if p1:
             post_comment = PostComment(comment_msg=msg, comment_user_id=current_user.id)
-            p1.comment = [post_comment]  # post的评论添加
+            p1.comment.append(post_comment)  # post的评论添加
             db.session.commit()  # 更新数据库
-            resp['status'] = 200
+            struct_time = post_comment.comment_timestamp
+            timestamp = datetime.strftime(struct_time, '%Y-%m-%d %H:%M:%S')
+            resp['code'] = 200
+            resp['data'] = {
+                    'msg': post_comment.comment_msg,
+                    'timestamp': timestamp,
+                    'usr_id': post_comment.comment_user_id,
+                    'usr_name': current_user.username,
+                    'usr_avaster': current_user.avatar_img,
+                }
     else:
         pass
+    print(resp)
     return jsonify(resp)
 
 
