@@ -4,7 +4,7 @@ $("#submit-comment").click(function(){
     var comment =$("#post-comment").val();
     var title=$("#article-detail-title").text()
     var username=$("#article-detail-user").text()
-    if(comment || comment=''){
+    if(comment || comment==""){
         $.ajax({
             type: "POST",
             dataType: "json",

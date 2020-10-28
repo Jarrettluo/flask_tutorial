@@ -52,6 +52,8 @@
              <ul class="nav nav-pills">
               <li role="presentation" class="{% if current_user in post.users %} active {% endif %}"><a href="{{ url_for('like_post', post_id=post.id) }}"><span class="glyphicon glyphicon-triangle-top" aria-hidden="true"></span> {{ (post.users)|length }} 支持</a></li>
               <li role="presentation" class=""><a href="{{ url_for('unlike_post', post_id=post.id) }}"><span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span></a></li>
+               <li role="presentation"><a tabindex="0" role="button" data-toggle="popover" data-trigger="click" data-placement="top" title="Dismissible popover"
+                                          data-content="And here's some amazing content. It's very engaging. Right?">可消失的弹出框</a> </li>
               <li role="presentation" class=""><a href="#" aria-expanded="false" aria-controls="collapseExample"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>  评论</a></li>
               <li role="presentation" class=""><a href="#"><span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span>  分享</a></li>
               <li role="presentation" class=""><a href="#"><span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span>  收藏</a></li>
@@ -124,6 +126,21 @@
           </div>
 
         <div id="qrcode"></div>
+
+        <a href="#" data-toggle="popover" title="Example popover">
+            请悬停在我的上面
+        </a>
+
+        <button type="button" class="btn btn-primary" title="Popover title"
+            data-container="body" data-toggle="popover" data-placement="top"
+            data-content="顶部的 Popover 中的一些内容">
+            顶部的 Popover
+        </button>
+
+        <a id ="example" tabindex="0" role="button" data-toggle="popover" data-trigger="click" data-placement="top" title="Dismissible popover"
+                                          data-content="And here's some amazing content. It's very engaging. Right?">可消失的弹出框</a>
+
+
         <!-- <script type="text/javascript">
         new QRCode(document.getElementById("qrcode"), "http://www.runoob.com");  // 设置要生成二维码的链接
         </script> -->
@@ -140,6 +157,7 @@
                 <div class="form-group">
                   <input class="form-control" id="post-comment" placeholder="评论该资源"  style="width:420px;">
                 </div>
+
                 <button type="submit" class="btn btn-default" id="submit-comment" style="width:10%;">
                   评论
                 </button>
@@ -150,6 +168,8 @@
             </div>
         </div> <!--blog-post-->
         <br>
+
+        <div id="qrcode"></div>
 
         <div class="blog-post" id = 'recommend_content' style="
           background-color:#ffffff;
@@ -202,6 +222,8 @@
 </div><!--/.container-->
 
 <script src="{{ url_for('static', filename='vendor/jquery.min.js') }}"></script>
+<script src="{{ url_for('static', filename='vendor/jquery.qrcode.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/post_recomment.js') }}"></script>
 <script src="{{ url_for('static', filename='js/post_comment.js') }}"></script>
+<script src="{{ url_for('static', filename='js/post_share.js') }}"></script>
 {% endblock%}
