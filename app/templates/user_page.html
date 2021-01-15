@@ -2,7 +2,7 @@
 
 {% block app_content %}
 <div class="container">
-    <div class="row">
+    <div class="row" style="margin-top:10px;">
         <div class="col-md-6"  style="background-color:#ffffff">
             {% with messages = get_flashed_messages(with_categories = true)%}
             {% if messages %}
@@ -15,7 +15,7 @@
             {% endwith %}
             <h1>{{ user.username }}的主页</h1>
             {% if current_user == user %}
-            <a href="{{ url_for('edit_profile')}}"> 修改头像 </a>
+            <a href="{{ url_for('usercenter.user_new_avatar')}}"> 账号修改 </a>
             {% else %}
                 {% if current_user.is_following(user) %}
                     <a href="{{ url_for('unfollow', username = user.username ) }}">取消关注</a>

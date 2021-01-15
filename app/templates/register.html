@@ -1,9 +1,35 @@
 {% extends 'base.html' %}
 
 {% block app_content %}
-<div class="container">
-    <div class="cow">
-        <div class="col-md-6">
+<!--<div class="container">-->
+<!--    <div class="cow">-->
+<!--        <div class="col-md-6">-->
+<!--            {% with messages = get_flashed_messages(with_categories = true)%}-->
+<!--            {% if messages %}-->
+<!--                {% for category, message in messages %}-->
+<!--                <div class="alert alert-{{ category }}">-->
+<!--                    {{ message }}-->
+<!--                </div>-->
+<!--                {% endfor %}-->
+<!--            {% endif %}-->
+<!--            {% endwith %}-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+<!--<div class="container">-->
+<!--<h1> 现在注册 </h1>-->
+<!--    <br>-->
+<!--<div class="row">-->
+<!--    <div class="col-md-6">-->
+<!--        {% import 'bootstrap/wtf.html' as wtf %}-->
+<!--        {{ wtf.quick_form(form) }}-->
+<!--    </div>-->
+<!--</div>-->
+<!--</div>-->
+
+ <div class="container">
+    <div class="row" style="margin-top:10px;">
+        <div class="col-md-6 col-md-offset-3">
             {% with messages = get_flashed_messages(with_categories = true)%}
             {% if messages %}
                 {% for category, message in messages %}
@@ -13,17 +39,45 @@
                 {% endfor %}
             {% endif %}
             {% endwith %}
+            <form class="form-horizontal" action="{{ url_for('register') }}" method='post'>
+                {{ form.hidden_tag() }}
+                <br>
+                <img src="{{ url_for('static', filename='asset/logo/logo-big.png') }}" height="99px" width="300px" >
+                 <span class="heading">
+                     <a href="{{ url_for('login')}}">登录</a>
+                     ·
+                     <a href="{{ url_for('register')}}">注册</a>
+                 </span>
+                <div class="form-group">
+                    <input type="text" class="form-control" name="username" id="inputEmail3" placeholder="用户名，长度6-20位">
+                    <i class="fa fa-user"></i>
+                </div>
+                <div class="form-group">
+                    <input type="email" class="form-control" name="email" id="inputEmail4" placeholder="电子邮箱">
+                    <i class="fa fa-envelope"></i>
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" name="authCode" id="inputEmail3" placeholder="邮箱验证码">
+                    <i class="fa fa-shield"></i>
+                    <a href="#" class="fa fa-question-circle" style="font-size:14px;margin-top:2px;"><mute>验证邮箱</mute></a>
+                </div>
+                <div class="form-group" >
+                    <input type="password" class="form-control" name="password" id="inputPassword3" placeholder="密码，长度8-20位">
+                    <i class="fa fa-lock"></i>
+                </div>
+                <div class="form-group" >
+                    <input type="password" class="form-control" name="confirm" id="inputPassword5" placeholder="确认密码">
+                    <i class="fa fa-lock"></i>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-default">注    册</button>
+                </div>
+            </form>
         </div>
     </div>
-</div>
-<div class="container">
-<h1> 现在注册 </h1>
-    <br>
-<div class="row">
-    <div class="col-md-6">
-        {% import 'bootstrap/wtf.html' as wtf %}
-        {{ wtf.quick_form(form) }}
-    </div>
-</div>
-</div>
+ </div>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/loginPage.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/font-awesome/font-awesome.min.css') }}">
+
 {% endblock %}

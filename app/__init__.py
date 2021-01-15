@@ -25,7 +25,7 @@ from flask_mail import Mail
 app = Flask(__name__)
 bootstrap = Bootstrap(app)
 app.config.from_object(Config)
-app.config['JSONIFY_MIMETYPE'] ="application/json;charset=utf-8" #指定浏览器渲染的文件类型，和解码格式；
+app.config['JSONIFY_MIMETYPE'] = "application/json;charset=utf-8"  # 指定浏览器渲染的文件类型，和解码格式；
 app.config['JSON_AS_ASCII'] = False
 db = SQLAlchemy(app)
 
@@ -42,4 +42,9 @@ from app.routes import *
 
 # 添加蓝图
 from .admin.view import admin_blueprint
+
 app.register_blueprint(admin_blueprint, url_prefix='/admin')
+
+from .usercenter.view import user_center_blueprint
+
+app.register_blueprint(user_center_blueprint, url_prefix='/userCenter')

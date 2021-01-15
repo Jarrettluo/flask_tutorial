@@ -1,4 +1,4 @@
-<nav class="navbar navbar-default navbar-fixed-top">
+<nav class="navbar navbar-default navbar-fixed-top" style="margin:0px;">
   <div class="container">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
@@ -9,7 +9,7 @@
         <span class="icon-bar"></span>
       </button>
       <a class="navbar-brand" href="{{ url_for('index') }}">
-          <img src="{{ url_for('static', filename='asset/logoko.png') }}" class="img-responsive" alt="Brand" style="height:60px;margin-top:-20px;">
+          <img src="{{ url_for('static', filename='asset/logo/logo-small.png') }}" class="img-responsive" alt="Brand" style="height:40px;margin-top:-10px;">
       </a>
     </div>
 
@@ -47,33 +47,30 @@
         {% else %}
         <li>
           <button type="button" class="btn btn-danger navbar-btn">
-            <a href="{{ url_for('create')}}" style="text-decoration:none;color:#fff;">
+            <a href="{{ url_for('usercenter.user_new_contribute')}}" style="text-decoration:none;color:#fff;">
               <span class=" glyphicon glyphicon-leaf" aria-hidden="true"></span>  创作中心
             </a>
           </button>
         </li>
-        <li><a href="#" style="font-size:20px;">  <span class="glyphicon glyphicon-heart" aria-hidden="true"></span>  </a> </li>
-        <li><a href="#" style="font-size:20px;">  <span class="glyphicon glyphicon-bell" aria-hidden="true"></span>  </a> </li>
+        <li><a href="{{ url_for('usercenter.user_collection')}}" style="font-size:20px;">  <span class="glyphicon glyphicon-heart" aria-hidden="true"></span>  </a> </li>
+        <li><a href="{{ url_for('usercenter.user_message')}}" style="font-size:20px;">  <span class="glyphicon glyphicon-bell" aria-hidden="true"></span>  </a> </li>
         <li class="dropdown">
           <a class="btn dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown">
-            <img src="{{ current_user.avatar_img }}" alt="..." class="img-circle" width="28px" style="padding:-10px;margin:-5px;">
+            <img src="{{ current_user.avatar_img }}" alt="..." class="img-circle" width="28px" height="28px" style="padding:-10px;margin:-5px;">
           </a>
             <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
               <li role="presentation">
-                    <a role="menuitem" tabindex="-1"  href="{{ url_for('login')}}" > <span class="glyphicon glyphicon-heart" aria-hidden="true" style="color:#777777;">  </span>   我的关注 </a>
+                    <a role="menuitem" tabindex="-1"  href="{{ url_for('my_page') }}" ><span class="glyphicon glyphicon-user" aria-hidden="true" style="color:#777777;">  </span>   我的主页  </a>
               </li>
               <li role="presentation">
-                    <a role="menuitem" tabindex="-1"  href="{{ url_for('login')}}" > <span class="glyphicon glyphicon-user" aria-hidden="true" style="color:#777777;">  </span>   个人中心 </a>
-              </li>
-              <li role="presentation">
-                    <a role="menuitem" tabindex="-1"  href="{{ url_for('login')}}" > <span class="glyphicon glyphicon-cog" aria-hidden="true" style="color:#777777;">  </span>   账号设置 </a>
+                    <a role="menuitem" tabindex="-1"  href="{{ url_for('usercenter.user_sources')}}" ><span class="glyphicon glyphicon-leaf" aria-hidden="true" style="color:#777777;">  </span>  我的资源  </a>
               </li>
               <li role="separator" class="divider"></li>
               <li role="presentation">
-                    <a role="menuitem" tabindex="-1"  href="{{ url_for('login')}}" aria-label="Left Align"> <span class="glyphicon glyphicon-leaf" aria-hidden="true" style="color:#777777;">  </span>  我的资源 </a>
+                    <a role="menuitem" tabindex="-1"  href="{{ url_for('usercenter.user_new_avatar')}}" aria-label="Left Align"><span class="glyphicon glyphicon-cog" aria-hidden="true" style="color:#777777;">  </span>   账号设置  </a>
               </li>
               <li role="presentation">
-                    <a role="menuitem" tabindex="-1"  href="{{ url_for('login')}}" > <span class="glyphicon glyphicon-tags" aria-hidden="true" style="color:#777777;">  </span>  管理资源 </a>
+                    <a role="menuitem" tabindex="-1"  href="{{ url_for('usercenter.user_recharge')}}" > <span class="glyphicon glyphicon-tags" aria-hidden="true" style="color:#777777;">  </span>  充值中心 </a>
               </li>
 
             </ul>

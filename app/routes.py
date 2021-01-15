@@ -8,16 +8,19 @@
 """
 import heapq
 import os, json
+import random
 from datetime import time, datetime
 from typing import Dict, List, Any
 
 from flask import render_template, request, flash, redirect, url_for, jsonify
+from sqlalchemy import or_
+
 from app.forms import RegisterForm, LoginForm, PasswordResetRequestForm, ResetPasswordForm, PostTweetForm, \
     UploadPhotoForm
 from app import app, bcrypt, db
 from app.models import User, Post, Coin, PostComment
 from flask_login import login_user, login_required, current_user, logout_user
-from app.email import send_reset_password_mail
+from app.email import send_reset_password_mail, send_recharge_source_mail
 from werkzeug.utils import secure_filename
 
 ALLOWED_EXTENSIONS = {'jpg', 'png', 'jpeg', 'gif'}
@@ -55,13 +58,14 @@ def register():
         password = request.form['password']
         password = bcrypt.generate_password_hash(password)
         # bcrypt.check_password_hash(password, originpassword)
-        user = User(username=username, email=email, password=password, status=True, all_coins=0)
+        default_img = '/static/asset/user_avatar/default/default_' + str(random.randint(1, 5)) + '.jpg'
+        user = User(username=username, email=email, password=password, avatar_img=default_img, status=True, all_coins=0)
         db.session.add(user)
         db.session.commit()
 
         cost = 20
         describe = '新用户注册赠送20金币'
-        operate = 'True'
+        operate = 2 # 新增
         new_coin = Coin(cost=cost, describe=describe, operate=operate)
         user.user_coins.append(new_coin)
 
@@ -71,6 +75,8 @@ def register():
         db.session.commit()
         flash('注册成功，请登录!', category='success')
         return redirect(url_for('login'))
+    else:
+        flash("注册失败！请重新输入", category="danger")
     return render_template('register.html', form=form)
 
 
@@ -97,6 +103,7 @@ def login():
                 return redirect(next_page)
             return redirect(url_for('index'))
         flash('用户不存在或者密码错误', category='danger')
+    # flash("请完善登录信息", category='info')
     return render_template('login.html', form=form)
 
 
@@ -122,7 +129,7 @@ def send_password_reset_request():
         email = form.email.data
         user = User.query.filter_by(email=email).first()
         token = user.generate_reset_passpord_token()
-        print('--------------' + str(token))
+        # print('--------------' + str(token))
         send_reset_password_mail(user, token)
         flash('Password reset request mail is sent, please check your mailbox.', category='info')
     return render_template('send_password_reset_request.html', form=form)
@@ -155,9 +162,9 @@ def user_page(username):
     if user:
         n_followers = len(user.followers)
         n_followed = len(user.followed)
-        print(n_followers, n_followed)
-        print(user.followers)
-        print(user.followed)
+        # print(n_followers, n_followed)
+        # print(user.followers)
+        # print(user.followed)
         followers = user.followers
         followed = user.followed
         page = request.args.get('page', 1, type=int)
@@ -166,6 +173,12 @@ def user_page(username):
                                followed=followed)
     else:
         return '404'
+
+
+@app.route('/myPage/')
+@login_required
+def my_page():
+    return redirect(url_for('user_page', username=current_user.username))
 
 
 @app.route('/follow/<username>')
@@ -221,9 +234,18 @@ def edit_profile():
 @app.route('/index')
 @app.route('/')
 def index():
+    """
+    网站的首页返回内容。
+    新注册的用户取全部用户的最后5名！
+    :return:
+    """
     posts = Post.query.order_by(Post.timestamp.desc())
-    new_users = User.query.all()[0:5]
+    new_users = User.query.all()
+    if len(new_users) > 5:
+        new_users = new_users[-6:-1]
     all_posts = Post.query.all()
+    if len(all_posts) > 5:
+        all_posts = all_posts[-6:-1]
     if all_posts and new_users:
         return render_template('home.html', posts=posts, new_users=new_users)
     else:
@@ -254,17 +276,21 @@ def about():
 
 @app.route('/search', methods=['GET', 'POST'])
 def search_keyword():
+    """
+    全局搜索按钮！
+    :return:
+    """
     if not current_user.is_authenticated:
         return redirect(url_for('login'))
     if request.method == 'POST':
         keyword = request.form['keyword']
         if keyword:
-            result = Post.query.filter((Post.body.contains(keyword))).order_by(
-                Post.timestamp.desc())
+            result = Post.query.filter(or_(Post.body.contains(keyword),
+                                           Post.title.contains(keyword))) \
+                .order_by(Post.timestamp.desc())
             if result.all():
                 flash('检索成功！', category='success')
                 page = request.args.get('page', 1, type=int)
-                # posts = Post.query.order_by(Post.timestamp.desc()).paginate(page, 20, False)
                 posts = result.paginate(page, 20, False)
                 return render_template('search_result.html', posts=posts)
             else:
@@ -323,17 +349,24 @@ def cash_resource(post_id):
         else:
             current_user.all_coins = current_user.all_coins - cost  # 用户的总金币数减少
             describe = f'购买{post.id}_{post.title}'
-            operate = 1
+            operate = 1  # 减少
             coin = Coin(cost=cost, describe=describe, operate=operate)
             current_user.user_coins.append(coin)
+
+            post.author.all_coins = post.author.all_coins + cost
+            describe = f'用户{current_user.id}_购买{post.id}'
+            operate = 2  # 增加
+            coin = Coin(cost=cost, describe=describe, operate=operate)
+            post.author.user_coins.append(coin)
             db.session.commit()
-            flash('兑换成功', category='info')
+            flash('兑换成功,请查收邮箱！', category='info')
+            send_recharge_source_mail(current_user, post)
             return redirect(url_for('article_detail', post_id=post_id))
 
 
 @app.route('/recommend', methods=['GET'])  # 推荐文章, 支持量最高的前十篇文章
 def recommend():
-    print('这里是推荐的内容！')
+    # print('这里是推荐的内容！')
     post = Post.query.all()  # 根据文章ID查找
     post_id = [post.index(i) for i in post]
     most_recommend = [len(i.users) for i in post]  # 获取每个文章的支持用户数
@@ -366,7 +399,7 @@ def recommend():
 @app.route('/comment', methods=['GET', 'POST'])
 def comment():
     resp = {}
-    print('到达comment页面！')
+    # print('到达comment页面！')
     if request.method == 'GET':
         args = request.args
         args = args.to_dict()  # 获取get的参数
@@ -404,15 +437,15 @@ def comment():
             timestamp = datetime.strftime(struct_time, '%Y-%m-%d %H:%M:%S')
             resp['code'] = 200
             resp['data'] = {
-                    'msg': post_comment.comment_msg,
-                    'timestamp': timestamp,
-                    'usr_id': post_comment.comment_user_id,
-                    'usr_name': current_user.username,
-                    'usr_avaster': current_user.avatar_img,
-                }
+                'msg': post_comment.comment_msg,
+                'timestamp': timestamp,
+                'usr_id': post_comment.comment_user_id,
+                'usr_name': current_user.username,
+                'usr_avaster': current_user.avatar_img,
+            }
     else:
         pass
-    print(resp)
+    # print(resp)
     return jsonify(resp)
 
 
