@@ -42,9 +42,10 @@ from app.routes import *
 
 # 添加蓝图
 from .admin.view import admin_blueprint
-
 app.register_blueprint(admin_blueprint, url_prefix='/admin')
 
 from .usercenter.view import user_center_blueprint
-
 app.register_blueprint(user_center_blueprint, url_prefix='/userCenter')
+
+from .aboutPage.view import about_page_blueprint
+app.register_blueprint(about_page_blueprint, url_prefix='/aboutPage')

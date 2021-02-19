@@ -17,3 +17,30 @@ body {
   background-color: #f5f5f5;
   padding:20px;
 }
+
+
+
+
+.img-container {
+    padding: 4px;
+    width: 113px;
+    height: 113px;
+    float: left;
+    margin: 2px;
+    border: 1px solid #f1f3f4;
+}
+
+.img-container.img-rounded {
+    margin: auto;
+}
+
+.img-container:hover{
+    border-radius: 4px;
+    border: 1px solid #50bfff;
+    background-color: #ecf8ff;
+}
+
+.img-container:pressed{
+    border-radius: 4px;
+    border: 1px solid #50bfff;
+    }

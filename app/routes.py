@@ -247,6 +247,9 @@ def index():
     if len(all_posts) > 5:
         all_posts = all_posts[-6:-1]
     if all_posts and new_users:
+        for post in all_posts:
+            if len(post.body) > 30:
+                post.body = post.body[0:30]
         return render_template('home.html', posts=posts, new_users=new_users)
     else:
         return redirect('all_posts')
@@ -264,14 +267,6 @@ def article_detail(post_id):
 def test_article(post_id):
     post = Post.query.get(post_id)  # 根据文章ID查找
     return render_template('test_article.html', post=post)
-
-
-#
-
-@app.route('/about')
-@login_required
-def about():
-    return render_template('about.html')
 
 
 @app.route('/search', methods=['GET', 'POST'])
