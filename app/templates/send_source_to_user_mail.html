@@ -1,0 +1,18 @@
+<p>亲爱的 {{ user.username }}</p>
+<p>
+    你希望兑换的资源：
+    <a href="{{ url_for('article_detail', post_id = post.id, _external = True) }}">
+        {{ post.title }}
+    </a>
+</p>
+<p>提取的方式如下：</p>
+<div style="padding:20px;background-color:#f7f7fc;width:100%;border-radius:2px;">
+    <p>{{ post.source_addr }}</p>
+</div>
+<p>以上！</p>
+<p>
+    祝好！
+</p>
+<p>
+    资源共享网
+</p>

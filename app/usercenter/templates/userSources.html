@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block app_content %}
+<div class="container" style="margin-top:0px;padding:10px;">
+    <div class="row">
+          <div class="col-xs-6 col-md-2" style="padding:5px;">
+              <div style="background-color:white;padding:5px;">
+                  <ul class="nav nav-pills nav-stacked">
+                      <li role="presentation">
+                          <a href="{{ url_for('usercenter.user_new_contribute')}}">创作中心</a>
+                      </li>
+                      <li role="presentation" class="active">
+                          <a href="{{ url_for('usercenter.user_sources')}}">我的资源</a>
+                      </li>
+                      <li role="presentation">
+                          <a href="{{ url_for('usercenter.user_collection')}}">我的收藏</a>
+                      </li>
+                      <li role="presentation"><hr></li>
+                      <li role="presentation">
+                          <a href="{{ url_for('usercenter.user_new_avatar')}}">账号设置</a>
+                      </li>
+                      <li role="presentation">
+                          <a href="{{ url_for('usercenter.user_message')}}">消息通知</a>
+                      </li>
+                      <li role="presentation">
+                          <a href="{{ url_for('usercenter.user_recharge')}}">充值中心</a>
+                      </li>
+                  </ul>
+              </div>
+          </div>
+      <div class="col-xs-12 col-sm-6 col-md-10" style="padding:5px;">
+          <div style="background-color:white;padding:5px;height: calc(90vh)">
+              <div style="padding:10px;border-bottom:1px solid #f1f3f4">
+                  <div style="border-left:3px solid #d9534f;padding-left:10px;">
+                  <h4>我的资源</h4>
+                  </div>
+              </div>
+              <div style="padding:10px;">
+                  {% with messages = get_flashed_messages(with_categories = true)%}
+                      {% if messages %}
+                          {% for category, message in messages %}
+                          <div class="alert alert-{{ category }}">
+                            {{ message }}
+                          </div>
+                          {% endfor %}
+                      {% endif %}
+                      {% endwith %}
+                  <div class="panel panel-default">
+                      <!-- Default panel contents -->
+                      <div class="panel-heading">我上传的全部资源列表</div>
+                      {% with my_posts = current_user.posts %}
+                      {% if my_posts|length>0 %}
+                      <!-- Table -->
+                      <table class="table table-condensed" align="center">
+                          <tr>
+                            <th>序号</th>
+                            <th>资源标题</th>
+                            <th>上传时间</th>
+                            <th>资源价值</th>
+                            <th>支持人数</th>
+                            <th>操作</th>
+                          </tr>
+                          {% for my_post in my_posts%}
+                          <tr>
+                            <td>{{ my_post.id }}</td>
+                            <td>{{ my_post.title }}</td>
+                            <td>{{ my_post.timestamp}}</td>
+                            <td>{{ my_post.source_value}}</td>
+                            <td>{{ (my_post.users)|length }}</td>
+                            <td>
+                                <a href="{{ url_for('usercenter.delete_post', post_id=my_post.id) }}">
+                                <button class="btn btn-danger btn-xs">删除</button></a>
+                            </td>
+                          </tr>
+                          {% endfor %}
+                      </table>
+                      {% else %}
+                        <p>你还没有提交过资源，赶紧<a href="{{ url_for('usercenter.user_new_contribute')}}">提交去吧！<a></p>
+                      {% endif %}
+                      {% endwith %}
+                    </div>
+              </div>
+          </div>
+      </div>
+    </div>
+
+</div>
+{% endblock %}

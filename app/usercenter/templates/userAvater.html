@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+
+{% block app_content %}
+<div class="container" style="margin-top:0px;padding:10px;">
+    <div class="row">
+          <div class="col-xs-6 col-md-2" style="padding:5px;">
+              <div style="background-color:white;padding:5px;">
+                  <ul class="nav nav-pills nav-stacked">
+                      <li role="presentation">
+                          <a href="{{ url_for('usercenter.user_new_contribute')}}">创作中心</a>
+                      </li>
+                      <li role="presentation">
+                          <a href="{{ url_for('usercenter.user_sources')}}">我的资源</a>
+                      </li>
+                      <li role="presentation">
+                          <a href="{{ url_for('usercenter.user_collection')}}">我的收藏</a>
+                      </li>
+                      <li role="presentation"><hr></li>
+                      <li role="presentation" class="active">
+                          <a href="{{ url_for('usercenter.user_new_avatar')}}">账号设置</a>
+                      </li>
+                      <li role="presentation">
+                          <a href="{{ url_for('usercenter.user_message')}}">消息通知</a>
+                      </li>
+                      <li role="presentation">
+                          <a href="{{ url_for('usercenter.user_recharge')}}">充值中心</a>
+                      </li>
+                  </ul>
+              </div>
+          </div>
+      <div class="col-xs-12 col-sm-6 col-md-10" style="padding:5px;">
+          <div style="background-color:white;padding:5px;height: calc(90vh)">
+              <div style="padding:10px;border-bottom:1px solid #f1f3f4">
+                  <div style="border-left:3px solid #d9534f;padding-left:10px;">
+                  <h4>账号设置</h4>
+                  </div>
+              </div>
+              <div style="padding:0px 10px;">
+                  <div>
+                      <h5 style="font-size:14px;color:#5f6368;">
+                          <strong>
+                              <span class="glyphicon glyphicon-th-large" aria-hidden="true"></span> 个人基本信息
+                          </strong>
+                      </h5>
+                  </div>
+                  <div style="padding:10px;">
+                      <table class="table1" border="0" width="100%">
+                          <tr>
+                              <td width="50%">用户名：{{ current_user.username }}</td>
+                              <td></td>
+                          </tr>
+                           <tr>
+                              <td>邮箱：{{ current_user.email }}</td>
+                              <td>账号状态：
+                                  {% if current_user.status == "1" %}
+                                        正常
+                                  {% else %}
+                                        <span style="color:red;">屏蔽</span>
+                                  {% endif %}</td>
+                          </tr>
+                      </table>
+                  </div>
+                  <p><br></p>
+                  <div>
+                      <h5 style="font-size:14px;color:#5f6368;">
+                          <strong>
+                              <span class="glyphicon glyphicon-th-large" aria-hidden="true"></span> 修改头像
+                          </strong>
+                      </h5>
+                  </div>
+                  <div style="padding:10px;">
+                      <p>请选择以下图像：</p>
+                      <div style="background-color:#f1f3f4;padding:5px;border-radius:4px;overflow:hidden;">
+                          <div class="img-container">
+                              <img src="/static/asset/user_avatar/default/default_1.jpg" alt="..."
+                                   class="img-rounded" width="100px;" height="100px;">
+                          </div>
+                          <div class="img-container">
+                              <img src="/static/asset/user_avatar/default/default_2.jpg" alt="..."
+                                   class="img-rounded" width="100px;" height="100px;">
+                          </div>
+                          <div class="img-container">
+                              <img src="/static/asset/user_avatar/default/default_3.jpg" alt="..."
+                                   class="img-rounded" width="100px;" height="100px;">
+                          </div>
+                          <div class="img-container">
+                              <img src="/static/asset/user_avatar/default/default_4.jpg" alt="..."
+                                   class="img-rounded" width="100px;" height="100px;">
+                          </div>
+                          <div class="img-container">
+                              <img src="/static/asset/user_avatar/default/default_5.jpg" alt="..."
+                                   class="img-rounded" width="100px;" height="100px;">
+                          </div>
+                      </div>
+                      <p style="font-size:1px;"><br></p>
+                      <button type="button" class="btn btn-default">确认</button>
+                  </div>
+<!--                  <div style="padding:10px;">-->
+<!--                      <p>自行提交图像：</p>-->
+<!--                      {% import 'bootstrap/wtf.html' as wtf %}-->
+<!--                        {{ wtf.quick_form(form) }}-->
+<!--                  </div>-->
+<!--                  <p><br></p>-->
+                  <div>
+                      <div style="margin-top:10px;">
+                          <h5 style="font-size:14px;color:#5f6368;">
+                              <strong>
+                                  <span class="glyphicon glyphicon-th-large" aria-hidden="true"></span> 退出账号
+                              </strong>
+                          </h5>
+                      </div>
+                      <div style="padding:10px;">
+                          <a href="{{ url_for('logout') }}">
+                            <button type="button" class="btn btn-danger btn-sm">退出登录</button>
+                          </a>
+                      </div>
+                  </div>
+              </div>
+
+
+          </div>
+      </div>
+    </div>
+
+{% endblock %}

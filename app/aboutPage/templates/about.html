@@ -1,9 +1,8 @@
 {% extends 'base.html' %}
 
 {% block app_content %}
-<div class="container">
+<div class="container" style="padding-top:20px;">
     <div class="row">
-
         <div class="col-sm-9">
         {% with messages = get_flashed_messages(with_categories = true)%}
             {% if messages %}
@@ -40,6 +39,10 @@
 
         </div><!-- /.blog-main -->
 
+        {% block comment_content%}
+            {% include 'bottom-comment-panel.html' %}
+        {% endblock %}
+
         <nav>
           <ul class="pager">
             <li><a href="{{ url_for('index') }}">主页</a></li>
@@ -52,127 +55,42 @@
         <div class="col-xs-12 col-sm-3  col-md-3">
             {% block article_content%}
                 {% include 'side-author-link.html' %}
+                {% include 'side-friend-link.html' %}
+                {% include 'side-ads.html' %}
             {% endblock %}
 
-          <div class="sidebar-module sidebar-module-inset">
-            <h4>关于</h4>
-            <p>资源在线网为您提供各种类的线上资源。</p>
-          </div>
-          <div class="sidebar-module">
-            <h4>资源分类</h4>
-            <ol class="list-unstyled">
-              <li><a href="#">2020年5月</a></li>
-              <li><a href="#">2020年6月</a></li>
-              <li><a href="#">2020年7月</a></li>
-            </ol>
-          </div>
-          <div class="sidebar-module">
-            <h4>链接</h4>
-            <ol class="list-unstyled">
-              <li><a href="#">GitHub</a></li>
-              <li><a href="#"> </a></li>
-              <li><a href="#"> </a></li>
-            </ol>
-          </div>
       </div><!-- /.blog-sidebar  -->
 
-
-
-
-
-
-        <div class="col-sm-8 blog-main">
-          <div class="blog-post" style="background-color: aliceblue;">
-            <h2 class="blog-post-title">关于我们</h2>
-            <p class="blog-post-meta">2020年6月6日11:04  by <a href="#">admin</a></p>
-            <p>这里是一个知识的海洋，让你无穷的畅享！</p>
-              <br>
-              <br>
-            <hr>
-          </div><!-- /.blog-post -->
-
-
-            <!-- Modal -->
-            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-              <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">赞赏一下开发者</h4>
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">赞赏一下开发者</h4>
+              </div>
+              <div class="modal-body">
+                  <div class="col-xs-6">
+                  <img src="{{ url_for('static', filename='ads/微信图片_20200621191522.jpg') }}" alt="Alipay" class="img-responsive">
                   </div>
-                  <div class="modal-body">
-                      <div class="col-xs-6">
-                      <img src="{{ url_for('static', filename='ads/微信图片_20200621191522.jpg') }}" alt="Alipay" class="img-responsive">
-                      </div>
-                      <div class="col-xs-6">
-                          <img src="{{ url_for('static', filename='ads/微信图片_20200621191527.jpg') }}" alt="Wechatpay" class="img-responsive">
-                      </div>
-                      <br>
-                      <div class="row">
-                          <form action="">
-                          <input type="text" placeholder="在这里写下你的留下">
-                          <button>提交</button>
-                          </form>
-                      </div>
+                  <div class="col-xs-6">
+                      <img src="{{ url_for('static', filename='ads/微信图片_20200621191527.jpg') }}" alt="Wechatpay" class="img-responsive">
+                  </div>
+                  <br>
+                  <div class="row">
+                      <form action="">
+                      <input type="text" placeholder="在这里写下你的留下">
+                      <button>提交</button>
+                      </form>
+                  </div>
 
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal">支持一下</button>
-                    <button type="button" class="btn btn-default">下次再说</button>
-                  </div>
-                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">支持一下</button>
+                <button type="button" class="btn btn-default">下次再说</button>
               </div>
             </div>
-
-            <div class="panel panel-default">
-
-              <!-- Default panel contents -->
-                <div class="panel-heading" style="font-size:14px;font-weight:bold;">用户留言</div>
-                  <div class="panel-body" style="font-size:8px;">
-                      ffff
-                  </div>
-
-                  <!-- List group -->
-                  <ul class="list-group" style="font-size:12px;">
-                    <li class="list-group-item">用户留言1</li>
-                    <li class="list-group-item">用户留言2</li>
-                    <li class="list-group-item">用户留言3</li>
-                    <li class="list-group-item">用户留言4</li>
-                    <li class="list-group-item">用户留言5</li>
-                  </ul>
-                </div>
-
-
-          <nav>
-            <ul class="pager">
-              <li><a href="{{ url_for('index') }}">主页</a></li>
-              <li><a href="{{ url_for('all_posts') }}">更多</a></li>
-            </ul>
-          </nav>
-
-        </div><!-- /.blog-main -->
-
-        <div class="col-sm-3 col-sm-offset-1 blog-sidebar" style="margin-top:50px;">
-            <div class="sidebar-module sidebar-module-inset">
-            <h4 style="font-weight:bold;color:#489ee2;">相关链接</h4>
-            <ol class="list-unstyled">
-              <li><a href="https://www.bootcss.com/">https://www.bootcss.com/</a></li>
-              <li><a href="https://www.w3cschool.cn/flask/">https://www.w3cschool.cn/flask/</a></li>
-              <li><a href="http://docs.jinkan.org/docs/jinja2/">http://docs.jinkan.org/docs/jinja2/</a></li>
-            </ol>
-            </div>
-            <br>
-            <div class="sidebar-module sidebar-module-inset">
-            <h4 style="font-weight:bold;color:#489ee2;">关于开发者</h4>
-            <ol class="list-unstyled">
-                  <li><a href="https://www.zhihu.com/">关注知乎</a></li>
-                  <li><a href="https://www.weibo.com/">关注微博</a></li>
-                  <li><!-- Button trigger modal -->
-                <a data-toggle="modal" data-target="#myModal" href="javascript:void()">
-                  打赏支持
-                </a></li>
-            </ol>
-            </div>
+          </div>
         </div>
 
     </div><!-- /.row -->

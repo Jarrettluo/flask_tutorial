@@ -248,8 +248,8 @@ def index():
         all_posts = all_posts[-6:-1]
     if all_posts and new_users:
         for post in all_posts:
-            if len(post.body) > 30:
-                post.body = post.body[0:30]
+            if len(post.body) > 100:
+                post.body = post.body[0:100] + "..."
         return render_template('home.html', posts=posts, new_users=new_users)
     else:
         return redirect('all_posts')

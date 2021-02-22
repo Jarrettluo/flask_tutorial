@@ -1,0 +1,164 @@
+{% extends 'base.html' %}
+
+{% block app_content %}
+<div class="container" style="margin-top:0px;padding:10px;">
+    <div class="row">
+          <div class="col-xs-6 col-md-2" style="padding:5px;">
+              <div style="background-color:white;padding:5px;">
+                  <ul class="nav nav-pills nav-stacked">
+                      <li role="presentation">
+                          <a href="{{ url_for('usercenter.user_new_contribute')}}">创作中心</a>
+                      </li>
+                      <li role="presentation">
+                          <a href="{{ url_for('usercenter.user_sources')}}">我的资源</a>
+                      </li>
+                      <li role="presentation">
+                          <a href="{{ url_for('usercenter.user_collection')}}">我的收藏</a>
+                      </li>
+                      <li role="presentation"><hr></li>
+                      <li role="presentation">
+                          <a href="{{ url_for('usercenter.user_new_avatar')}}">账号设置</a>
+                      </li>
+                      <li role="presentation">
+                          <a href="{{ url_for('usercenter.user_message')}}">消息通知</a>
+                      </li>
+                      <li role="presentation" class="active">
+                          <a href="{{ url_for('usercenter.user_recharge')}}">充值中心</a>
+                      </li>
+                  </ul>
+              </div>
+          </div>
+      <div class="col-xs-12 col-sm-6 col-md-10" style="padding:5px;">
+          <div style="background-color:white;padding:5px;height: calc(90vh)">
+              <div style="padding:10px;border-bottom:1px solid #f1f3f4">
+                  <div style="border-left:3px solid #d9534f;padding-left:10px;">
+                  <h4>充值中心</h4>
+                  </div>
+              </div>
+              <div style="padding:10px">
+                  <div class="row">
+                      <div class="col-md-6" style="padding:20px;">
+                          <div style="border-radius:5px;background-color:#f0ad4e;color:white;height:100px;padding:18px 10px 10px 10px;">
+                              <div style="position: absolute;width:100px;text-align:center;">
+                                  <div style="width:80px;height:40px; font-size:24px;">
+                                      <i class="fa fa-link" aria-hidden="true"></i>
+                                  </div>
+                                  <div style="width:80px;height:40px;">
+                                      总金币数量
+                                  </div>
+                              </div>
+                              <div style="float:right;font-size:48px;">
+                                  {{ current_user.all_coins }}
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-md-6" style="padding:20px;">
+                          <div style="border-radius:5px;background-color:#6e6e6e;color:white;height:100px;padding:18px 10px 10px 10px;">
+                              <div style="position: absolute;width:100px;text-align:center;">
+                                  <div style="width:80px;height:40px; font-size:24px;">
+                                      <i class="fa fa-link" aria-hidden="true"></i>
+                                  </div>
+                                  <div style="width:80px;height:40px;">
+                                      总消费金币
+                                  </div>
+                              </div>
+                              <div style="float:right;font-size:48px;">
+                                  {{ consumption }}
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+
+                  <button type="button" class="btn" data-toggle="modal" data-target="#myModal">
+                      <i class="fa fa-plus-square-o" aria-hidden="true"></i> 增加金币
+                  </button>
+                  <p></p>
+                  <div style="border-radius:4px;
+                  padding:10px 10px 2px 10px;
+                  border:1px solid #eeeeee;
+                  border-left: 4px solid #1b809e;">
+                      <h4><strong>充值说明</strong></h4>
+                      <ul>
+                          <li>支持支付宝充值。</li>
+                          <li>充值的金币不可退还。</li>
+                          <li>提交充值申请后，2小时内到账。</li>
+                          <li>支持100RMB，可以获得10000资源币。</li>
+                      </ul>
+                  </div>
+                  <br>
+                  <p>操作记录</p>
+                  {% if records %}
+                  <table class="table">
+                      <tr>
+                          <td>操作时间</td>
+                          <td>金币数</td>
+                          <td>操作描述</td>
+                      </tr>
+                      {% for record in records.items %}
+                      <tr>
+                          <td>{{ record.timestamp}}</td>
+                          {% if record.operate == 1 %}
+                          <td>-{{ record.cost}}</td>
+                          {% else %}
+                          <td>{{ record.cost}}</td>
+                          {% endif %}
+                          <td>{{ record.describe }}</td>
+                      </tr>
+                      {% endfor %}
+                  </table>
+                  {% else %}
+                  <p>暂时还没有记录</p>
+                  {% endif %}
+                  <nav aria-label="...">
+                      <ul class="pager">
+                        <li class="previous {% if records.has_prev == False %}disabled{% endif %}">
+                            <a href="{{ url_for('usercenter.user_recharge', page=records.prev_num )}}">
+                                <span aria-hidden="true">&larr;</span>
+                                上一页</a>
+                        </li>
+                        <li class="next {% if records.has_next == False %}disabled{% endif %}">
+                            <a href="{{ url_for('usercenter.user_recharge', page=records.next_num )}}">
+                            下一页 <span aria-hidden="true">&rarr;</span>
+                            </a>
+                        </li>
+                      </ul>
+                  </nav>
+
+
+              </div>
+
+          </div>
+      </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">支付充值</h4>
+              </div>
+              <div class="modal-body">
+                  <row align="center" style="margin:auto;">
+                      <div style="margin:auto">
+                        <img src="{{ url_for('static', filename='ads/微信图片_20200621191527.jpg') }}" width="200px" alt="Wechatpay">
+                        <img src="{{ url_for('static', filename='ads/微信图片_20200621191522.jpg') }}" alt="Alipay" width="200px">
+                      </div>
+                      <br>
+                      <p>扫描二维码，支付成功后，2小时内金币会到账！</p>
+                  </row>
+
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+<!--                <button type="button" class="btn btn-primary">Save changes</button>-->
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/font-awesome/font-awesome.min.css') }}">
+{% endblock %}
